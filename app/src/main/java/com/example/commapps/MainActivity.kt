@@ -1,9 +1,14 @@
 package com.example.commapps
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,9 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.example.commapps.ui.theme.CommAppsTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -39,6 +46,16 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+}
+
+fun hasPerms(context: Context): Boolean {
+    return ContextCompat.checkSelfPermission(
+        context, Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(
+                context, Manifest.permission.READ_PHONE_STATE
+            ) == PackageManager.PERMISSION_GRANTED
 }
 
 @Composable
@@ -65,6 +82,11 @@ fun MainScreen() {
         OptionCard(
             title = "Music",
             onClick = { context.startActivity(Intent(context, MusicActivity::class.java)) }
+        )
+        OptionCard(
+
+            title = "Socket",
+            onClick = { context.startActivity(Intent(context, SocketActivity::class.java)) }
         )
     }
 }

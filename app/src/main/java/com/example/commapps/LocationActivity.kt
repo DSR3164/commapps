@@ -162,6 +162,30 @@ fun LocationSaverScreen() {
             Text("Get Location")
         }
 
+        var text by remember { mutableStateOf("Delete") }
+        var showMessage by remember { mutableStateOf(false) }
+
+        Button(onClick = {
+            try {
+                file.writeText("")
+                text = "Файл очищен"
+                showMessage = true
+                entries = mutableListOf()
+            } catch (e: Exception) {
+                text = e.message ?: "Ошибка"
+            }
+        }) {
+            Text(if (showMessage) "Файл очищен" else "Delete")
+        }
+
+        if (showMessage) {
+            LaunchedEffect(Unit) {
+                kotlinx.coroutines.delay(3000)
+                showMessage = false
+                text = "Delete"
+            }
+        }
+
         Spacer(Modifier.height(16.dp))
         Text(statusText)
 
@@ -191,6 +215,8 @@ fun LocationCard(entry: LocationEntry) {
             Text("📍 Широта: ${entry.latitude}",
                 style = MaterialTheme.typography.bodyMedium)
             Text("📍 Долгота: ${entry.longitude}",
+                style = MaterialTheme.typography.bodyMedium)
+            Text("📍 Точность: ${entry.longitude}",
                 style = MaterialTheme.typography.bodyMedium)
         }
     }
